@@ -8,7 +8,8 @@
   // WinAnimation
   // ═══════════════════════════════════════════════════════════════════════════
 
-  var WIN_MESSAGES = [
+  // Phrases without Hayden's name — used most of the time
+  var WIN_PLAIN = [
     "Amazing! You did it!",
     "Brilliant spelling!",
     "Wow, you're so smart!",
@@ -16,7 +17,38 @@
     "You're a spell master!",
     "Incredible job!",
     "Super duper spelling!",
+    "Woohoo! Perfect!",
+    "That's right! Well done!",
   ];
+
+  // Phrases with Hayden's name — word placeholder replaced at call time
+  var WIN_HAYDEN = [
+    "Amazing, Hayden!",
+    "You did it Hayden, you summoned the {word}!",
+    "Incredible spell, Hayden!",
+    "Hayden, you're a demon hunter!",
+    "Yes Hayden, that's right!",
+    "{word}! Great job Hayden!",
+    "Woohoo Hayden!",
+    "Hayden, you're unstoppable!",
+  ];
+
+  // Counter tracking rounds since the last name mention
+  var _roundsSinceName = 0;
+
+  function pickWinMessage(word) {
+    _roundsSinceName++;
+    // Use a name phrase every 2–3 rounds (randomly decide the threshold each time)
+    var threshold = 2 + Math.floor(Math.random() * 2); // 2 or 3
+    var useHayden = _roundsSinceName >= threshold;
+
+    if (useHayden) {
+      _roundsSinceName = 0;
+      var template = WIN_HAYDEN[Math.floor(Math.random() * WIN_HAYDEN.length)];
+      return template.replace(/\{word\}/g, word);
+    }
+    return WIN_PLAIN[Math.floor(Math.random() * WIN_PLAIN.length)];
+  }
 
   function showWin(word, onDone) {
     var existing = document.getElementById("win-overlay");
@@ -25,7 +57,7 @@
     var overlay = document.createElement("div");
     overlay.id = "win-overlay";
 
-    var msg = WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
+    var msg = pickWinMessage(word);
 
     overlay.innerHTML =
       '<div class="win-emoji">🎉</div>' +
@@ -35,7 +67,7 @@
     document.body.appendChild(overlay);
 
     if (window.speechSynthesis) {
-      var utt = new SpeechSynthesisUtterance(msg + " You spelled " + word + "!");
+      var utt = new SpeechSynthesisUtterance(msg);
       utt.rate  = 0.9;
       utt.pitch = 1.2;
       window.speechSynthesis.speak(utt);
