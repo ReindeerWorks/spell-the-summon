@@ -439,10 +439,33 @@
   function speakWord(word) {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
-    var utt  = new SpeechSynthesisUtterance(word);
-    utt.rate  = 0.8;
-    utt.pitch = 1.1;
-    window.speechSynthesis.speak(utt);
+
+    // Build sequence: word → pause → letters (with pauses) → pause → word
+    var steps = [];
+    steps.push({ type: "speak", text: word });
+    steps.push({ type: "pause", ms: 600 });
+    word.split("").forEach(function (letter, i) {
+      steps.push({ type: "speak", text: letter });
+      if (i < word.length - 1) steps.push({ type: "pause", ms: 400 });
+    });
+    steps.push({ type: "pause", ms: 600 });
+    steps.push({ type: "speak", text: word });
+
+    function runNext(i) {
+      if (i >= steps.length) return;
+      var step = steps[i];
+      if (step.type === "speak") {
+        var utt   = new SpeechSynthesisUtterance(step.text);
+        utt.rate  = 0.8;
+        utt.pitch = 1.1;
+        utt.onend = function () { runNext(i + 1); };
+        window.speechSynthesis.speak(utt);
+      } else {
+        setTimeout(function () { runNext(i + 1); }, step.ms);
+      }
+    }
+
+    runNext(0);
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
