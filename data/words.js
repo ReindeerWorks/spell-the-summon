@@ -17,13 +17,13 @@ var WORDS = [
   { level: 2, word: "frog",  image: "assets/images/frog.png" },
   { level: 2, word: "star",  image: "assets/images/star.png" },
   { level: 2, word: "moon",  image: "assets/images/moon.png" },
-  { level: 2, word: "claw",  image: "assets/images/claw.png" },
-  { level: 2, word: "glow",  image: "assets/images/glow.png" },
-  { level: 2, word: "crow",  image: "assets/images/crow.png" },
+  { level: 2, word: "crab",  image: "assets/images/crab.png" },
+  { level: 2, word: "bird",  image: "assets/images/bird.png" },
   { level: 2, word: "wolf",  image: "assets/images/wolf.png" },
-  { level: 2, word: "dust",  image: "assets/images/dust.png" },
   { level: 2, word: "bone",  image: "assets/images/bone.png" },
-  { level: 2, word: "flame", image: "assets/images/flame.png" },
+  { level: 2, word: "drum",  image: "assets/images/drum.png" },
+  { level: 2, word: "hand",  image: "assets/images/hand.png" },
+  { level: 2, word: "fire",  image: "assets/images/fire.png" },
 
   // Level 3 — Demon Slayer (5-letter)
   { level: 3, word: "storm", image: "assets/images/storm.png" },
