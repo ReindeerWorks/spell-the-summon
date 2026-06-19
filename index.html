@@ -5,8 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Spell the Summon</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- Back-to-hub button — self-contained, replicates the hub's purple pill.
+       Placed after style.css and every key property set explicitly so the
+       game's own CSS cannot bleed in. -->
+  <style>
+    .bh-home-btn {
+      position: fixed;
+      top: 70px;
+      left: 12px;
+      z-index: 9999;
+      background: #8b5cf6;
+      color: #fff;
+      text-decoration: none;
+      border: none;
+      border-radius: 999px;
+      padding: 16px clamp(18px, 4vw, 30px);
+      font-family: "Comic Sans MS", "Chalkboard SE", "Trebuchet MS", system-ui, sans-serif;
+      font-size: clamp(20px, 4.5vw, 28px);
+      font-weight: bold;
+      line-height: 1;
+      box-shadow: 0 6px 0 rgba(0,0,0,.15);
+      min-height: 64px;
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .bh-home-btn:active { transform: translateY(3px); box-shadow: 0 3px 0 rgba(0,0,0,.15); }
+  </style>
 </head>
 <body>
+
+  <a href="https://hayden.brieflyhome.com" class="bh-home-btn">🏠 Home</a>
 
   <header id="top-bar">
     <div id="logo">✨ Spell the Summon</div>
