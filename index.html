@@ -55,5 +55,32 @@
 
   <script src="data/words.js"></script>
   <script src="main.js"></script>
+
+  <!-- Shared GIF celebration library (hosted once, used across games) -->
+  <script src="https://reindeerworks.github.io/hayden-shared-assets/celebrate.js"></script>
+  <!-- Fire a celebration GIF whenever the game's win overlay appears.
+       Done here (not in main.js) so this addition stays fully self-contained. -->
+  <script>
+    (function () {
+      function celebrate() {
+        if (window.HaydenCelebrate) {
+          HaydenCelebrate.show({ message: "You did it!" });
+        }
+      }
+      var obs = new MutationObserver(function (mutations) {
+        for (var i = 0; i < mutations.length; i++) {
+          var added = mutations[i].addedNodes;
+          for (var j = 0; j < added.length; j++) {
+            var node = added[j];
+            if (node.nodeType === 1 && node.id === "win-overlay") {
+              celebrate();
+              return;
+            }
+          }
+        }
+      });
+      obs.observe(document.body, { childList: true });
+    })();
+  </script>
 </body>
 </html>
