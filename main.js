@@ -66,12 +66,7 @@
 
     document.body.appendChild(overlay);
 
-    if (window.speechSynthesis) {
-      var utt = new SpeechSynthesisUtterance(msg);
-      utt.rate  = 0.9;
-      utt.pitch = 1.2;
-      window.speechSynthesis.speak(utt);
-    }
+    if (window.HaydenSpeak) HaydenSpeak.say(msg, { rate: 0.9, pitch: 1.2 });
 
     setTimeout(function () {
       overlay.style.transition = "opacity .3s";
@@ -437,8 +432,8 @@
   }
 
   function speakWord(word) {
-    if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
+    if (!window.HaydenSpeak) return;
+    HaydenSpeak.cancel();
 
     // Build sequence: word → pause → letters (with pauses) → pause → word
     var steps = [];
@@ -455,11 +450,13 @@
       if (i >= steps.length) return;
       var step = steps[i];
       if (step.type === "speak") {
-        var utt   = new SpeechSynthesisUtterance(step.text);
-        utt.rate  = 0.8;
-        utt.pitch = 1.1;
-        utt.onend = function () { runNext(i + 1); };
-        window.speechSynthesis.speak(utt);
+        // onEnd chains to the next step — preserves the letter-by-letter timing
+        // even when the first utterance is queued until the first tap (Android).
+        HaydenSpeak.say(step.text, {
+          rate:  0.8,
+          pitch: 1.1,
+          onEnd: function () { runNext(i + 1); }
+        });
       } else {
         setTimeout(function () { runNext(i + 1); }, step.ms);
       }
